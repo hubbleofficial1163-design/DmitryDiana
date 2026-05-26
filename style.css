@@ -2131,9 +2131,10 @@ a,
 
 
 .highlight-phone {
-    color: #e6c2c2;
+    color: #e6c2c2 !important;
     font-weight: bold;
     white-space: nowrap;
+    text-decoration: none;
 }
 
 
