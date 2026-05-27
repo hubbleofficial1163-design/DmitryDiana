@@ -1548,8 +1548,8 @@ a,
 
 /* Цветовая палитра кружочки */
 .color-palette {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(3, 50px);
     justify-content: center;
     gap: 15px;
     margin-top: 40px;
