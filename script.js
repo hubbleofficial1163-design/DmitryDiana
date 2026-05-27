@@ -1,4 +1,4 @@
-// Скрипт для свадебного сайта Степан & Евгения
+// Скрипт для свадебного сайта Дмитрий & Диана
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Свадебный сайт загружен');
     
@@ -12,13 +12,11 @@ document.addEventListener('DOMContentLoaded', function() {
     // Инициализация формы RSVP
     initRSVPForm();
     
-    // Инициализация ограничения алкоголя (максимум 2)
-    // initAlcoholLimit();
-    
     // Инициализация галереи
     initGallery();
-
-        initWishesSwipe();
+    
+    // Инициализация свайп-слайдера для пожеланий
+    initWishesSwipe();
 });
 
 // Таймер отсчета до свадьбы
@@ -243,7 +241,7 @@ function showLoadingModal() {
                 width: 50px;
                 height: 50px;
                 border: 3px solid #e0e0e0;
-                border-top-color: #5c151b;
+                border-top-color: #747452;
                 border-radius: 50%;
                 margin: 0 auto 20px;
                 animation: spin 1s linear infinite;
@@ -260,7 +258,7 @@ function showLoadingModal() {
 }
 
 // ========== GOOGLE SHEETS ==========
-const SCRIPT_URL = ''; // ЗАМЕНИТЕ НА ВАШ URL
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwr5mkomb8rH5UUiA-r8z6xJzT_vqwc6m_M8Thu7hrUaWCzOzyDEsCpXZtwkf461sktpQ/exec'; // ЗАМЕНИТЕ НА ВАШ URL
 
 // Инициализация формы RSVP
 function initRSVPForm() {
@@ -276,11 +274,9 @@ function initRSVPForm() {
         // Получаем данные
         const nameInput = this.querySelector('input[type="text"]');
         const attendanceRadio = this.querySelector('input[name="attendance"]:checked');
-        const foodRadio = this.querySelector('input[name="food"]:checked');
         
         const name = nameInput ? nameInput.value.trim() : '';
         const attendance = attendanceRadio ? attendanceRadio.value : null;
-        const food = foodRadio ? foodRadio.value : '';
         
         // Собираем выбранные алкогольные предпочтения
         let alcoholValues = [];
@@ -311,7 +307,6 @@ function initRSVPForm() {
             const formDataToSend = new URLSearchParams();
             formDataToSend.append('name', name);
             formDataToSend.append('attendance', attendance);
-            formDataToSend.append('food', food);
             
             for (const alcohol of alcoholValues) {
                 formDataToSend.append('alcohol', alcohol);
@@ -331,7 +326,7 @@ function initRSVPForm() {
                 if (attendance === 'yes') {
                     showModal(
                         'Спасибо, ' + name + '!',
-                        'Мы будем ждать вас на нашей свадьбе 21 августа 2026 года! 🎉',
+                        'Мы будем ждать вас на нашей свадьбе 13 августа 2026 года! 🎉',
                         false
                     );
                 } else {
@@ -360,35 +355,6 @@ function initRSVPForm() {
             submitBtn.textContent = originalText;
         }
     });
-}
-
-// ========== ОГРАНИЧЕНИЕ ВЫБОРА АЛКОГОЛЯ (МАКСИМУМ 2) ==========
-function initAlcoholLimit() {
-    const alcoholCheckboxes = document.querySelectorAll('input[name="alcohol"]');
-    
-    if (alcoholCheckboxes.length === 0) return;
-    
-    function handleAlcoholChange() {
-        const checkedCount = document.querySelectorAll('input[name="alcohol"]:checked').length;
-        
-        if (checkedCount >= 2) {
-            alcoholCheckboxes.forEach(checkbox => {
-                if (!checkbox.checked) {
-                    checkbox.disabled = true;
-                }
-            });
-        } else {
-            alcoholCheckboxes.forEach(checkbox => {
-                checkbox.disabled = false;
-            });
-        }
-    }
-    
-    alcoholCheckboxes.forEach(checkbox => {
-        checkbox.addEventListener('change', handleAlcoholChange);
-    });
-    
-    handleAlcoholChange();
 }
 
 // ========== ГАЛЕРЕЯ С ВОЗМОЖНОСТЬЮ СВАЙПА ==========
@@ -460,7 +426,6 @@ function initGallery() {
         updateDots();
     }
     
-    // Drag to scroll
     slider.addEventListener('mousedown', (e) => {
         isDragging = true;
         startX = e.pageX - slider.offsetLeft;
@@ -487,7 +452,6 @@ function initGallery() {
         slider.scrollLeft = scrollLeft - walk;
     });
     
-    // Touch events для свайпа
     let touchStartX = 0;
     let touchEndX = 0;
     
@@ -526,9 +490,7 @@ function initGallery() {
     setTimeout(updateIndexOnScroll, 100);
 }
 
-
-
-// Инициализация свайп-слайдера для пожеланий
+// ========== СВАЙП-СЛАЙДЕР ДЛЯ ПОЖЕЛАНИЙ ==========
 function initWishesSwipe() {
     const sliderContainer = document.getElementById('wishesSlider');
     if (!sliderContainer) return;
@@ -537,7 +499,6 @@ function initWishesSwipe() {
     const dotsContainer = document.getElementById('wishesDots');
     if (!slides.length || !dotsContainer) return;
     
-    // Создаём точки
     dotsContainer.innerHTML = '';
     slides.forEach((_, index) => {
         const dot = document.createElement('div');
@@ -553,7 +514,6 @@ function initWishesSwipe() {
         dotsContainer.appendChild(dot);
     });
     
-    // Обновление активной точки при скролле
     function updateActiveDot() {
         const containerWidth = sliderContainer.clientWidth;
         const scrollLeft = sliderContainer.scrollLeft;
@@ -572,14 +532,9 @@ function initWishesSwipe() {
         requestAnimationFrame(updateActiveDot);
     });
     
-    // Также обновляем при ресайзе
     window.addEventListener('resize', () => {
         updateActiveDot();
     });
     
     updateActiveDot();
 }
-
-// Не забудьте вызвать эту функцию в DOMContentLoaded:
-// внутри document.addEventListener('DOMContentLoaded', function() { ... }) добавьте строчку:
-// initWishesSwipe();
