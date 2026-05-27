@@ -2157,3 +2157,104 @@ a,
     color: #81754D;
     letter-spacing: 2px;
 }
+
+
+/* ===== СВАЙП-СЛАЙДЕР ДЛЯ ПОЖЕЛАНИЙ ===== */
+.wishes-slider-container {
+    position: relative;
+    width: 100%;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    cursor: grab;
+    scrollbar-width: thin;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.wishes-slider-container::-webkit-scrollbar {
+    height: 4px;
+    background-color: rgba(230, 194, 194, 0.3);
+    border-radius: 10px;
+}
+
+.wishes-slider-container::-webkit-scrollbar-thumb {
+    background-color: #e6c2c2;
+    border-radius: 10px;
+}
+
+.wishes-slider {
+    display: flex;
+    gap: 30px;
+    padding: 10px 5px;
+}
+
+.wishes-card {
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+    padding: 30px 25px;
+    transition: transform 0.2s ease;
+}
+
+/* Индикатор прокрутки (подсказка, что можно листать) */
+.wishes-scroll-hint {
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    color: #e6c2c2;
+    opacity: 0.8;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.wishes-scroll-hint span {
+    font-size: 1.2rem;
+    animation: hintMove 1.5s infinite ease-in-out;
+    display: inline-block;
+}
+
+.wishes-scroll-hint .hint-arrow {
+    animation: hintMove 1.5s infinite ease-in-out;
+}
+
+@keyframes hintMove {
+    0%, 100% { transform: translateX(0); opacity: 0.5; }
+    50% { transform: translateX(8px); opacity: 1; }
+}
+
+/* Точки-индикаторы слайдов */
+.wishes-dots {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.wishes-dot {
+    width: 8px;
+    height: 8px;
+    background-color: rgba(230, 194, 194, 0.5);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.wishes-dot.active {
+    width: 24px;
+    background-color: #e6c2c2;
+    border-radius: 10px;
+}
+
+/* Адаптация */
+@media (max-width: 768px) {
+    .wishes-card {
+        padding: 20px 18px;
+    }
+}
