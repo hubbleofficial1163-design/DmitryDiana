@@ -2258,3 +2258,26 @@ a,
         padding: 20px 18px;
     }
 }
+
+
+/* Отключение автоматического стиля номеров телефонов на мобильных */
+a[href^="tel"], 
+span.phone-number,
+.highlight-phone {
+    color: inherit !important;
+    text-decoration: none !important;
+    background-color: transparent !important;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Отключаем автоопределение телефонных номеров в Safari */
+[data-telephone="false"],
+[data-phone="false"] {
+    -webkit-touch-callout: none;
+}
+
+/* Полное отключение авто-линков для телефонов */
+body {
+    -webkit-touch-callout: none;
+    -webkit-text-size-adjust: 100%;
+}
