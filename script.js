@@ -17,6 +17,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Инициализация галереи
     initGallery();
+
+        initWishesSwipe();
 });
 
 // Таймер отсчета до свадьбы
@@ -523,3 +525,61 @@ function initGallery() {
     slider.style.cursor = 'grab';
     setTimeout(updateIndexOnScroll, 100);
 }
+
+
+
+// Инициализация свайп-слайдера для пожеланий
+function initWishesSwipe() {
+    const sliderContainer = document.getElementById('wishesSlider');
+    if (!sliderContainer) return;
+    
+    const slides = document.querySelectorAll('.wishes-card');
+    const dotsContainer = document.getElementById('wishesDots');
+    if (!slides.length || !dotsContainer) return;
+    
+    // Создаём точки
+    dotsContainer.innerHTML = '';
+    slides.forEach((_, index) => {
+        const dot = document.createElement('div');
+        dot.classList.add('wishes-dot');
+        if (index === 0) dot.classList.add('active');
+        dot.addEventListener('click', () => {
+            const slideWidth = sliderContainer.clientWidth;
+            sliderContainer.scrollTo({
+                left: index * slideWidth,
+                behavior: 'smooth'
+            });
+        });
+        dotsContainer.appendChild(dot);
+    });
+    
+    // Обновление активной точки при скролле
+    function updateActiveDot() {
+        const containerWidth = sliderContainer.clientWidth;
+        const scrollLeft = sliderContainer.scrollLeft;
+        const activeIndex = Math.round(scrollLeft / containerWidth);
+        const dots = document.querySelectorAll('.wishes-dot');
+        dots.forEach((dot, idx) => {
+            if (idx === activeIndex) {
+                dot.classList.add('active');
+            } else {
+                dot.classList.remove('active');
+            }
+        });
+    }
+    
+    sliderContainer.addEventListener('scroll', () => {
+        requestAnimationFrame(updateActiveDot);
+    });
+    
+    // Также обновляем при ресайзе
+    window.addEventListener('resize', () => {
+        updateActiveDot();
+    });
+    
+    updateActiveDot();
+}
+
+// Не забудьте вызвать эту функцию в DOMContentLoaded:
+// внутри document.addEventListener('DOMContentLoaded', function() { ... }) добавьте строчку:
+// initWishesSwipe();
